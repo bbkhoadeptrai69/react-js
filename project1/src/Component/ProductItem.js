@@ -8,7 +8,8 @@ class ProductItem extends Component {
             txtid: this.props.id,
             txtname: this.props.name,
             txtprice: this.props.price,
-            slCategoryId: this.props.categoryId
+            slCategoryId: this.props.categoryId,
+            txtImage: this.props.img
         }
     }
     
@@ -24,8 +25,8 @@ class ProductItem extends Component {
         })
     }
 
-    saveClick = (id, name, price, categoryId) => {
-        this.props.editProduct(id, name, price, categoryId);
+    saveClick = (id, name, price, categoryId, image) => {
+        this.props.editProduct(id, name, price, categoryId, image);
         this.setState({
             stateEdit: !this.state.stateEdit
         })
@@ -48,7 +49,8 @@ class ProductItem extends Component {
         if(this.state.stateEdit === true){
             return (
                 <tr>
-                    <td><img src={this.props.img} style={{width: 80, height: 80}} alt=""></img></td>
+                    {/* <td><img src={this.props.img} style={{width: 80, height: 80}} alt=""></img></td> */}
+                    <td><input name="txtImage"  type="text" className="form-control" defaultValue={this.props.img} onChange={(event) => this.isChange(event)}/></td>
                     <td><input name="txtname" type="text" className="form-control" defaultValue={this.props.name} onChange={(event) => this.isChange(event)}/> </td>
                     <td><input name="txtprice" className="form-control" defaultValue={this.removeComma(this.props.price)} onChange={(event) => this.isChange(event)}/></td>
                     <td>
@@ -62,7 +64,7 @@ class ProductItem extends Component {
                     </td>
                     <td>
                         <div className="btn-group">
-                            <button className="btn btn-outline-success" onClick={() => this.saveClick(this.state.txtid, this.state.txtname, this.state.txtprice, this.state.slCategoryId)}>Save</button>
+                            <button className="btn btn-outline-success" onClick={() => this.saveClick(this.state.txtid, this.state.txtname, this.state.txtprice, this.state.slCategoryId, this.state.txtImage)}>Save</button>
                         </div>
                     </td>
                 </tr>

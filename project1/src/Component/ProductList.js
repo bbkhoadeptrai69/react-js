@@ -17,7 +17,7 @@ class ProductList extends Component {
                 return 0;
             })
             return (
-                <ProductItem key={key} deleteProduct={(id) => this.props.deleteProduct(id)} editProduct={(id, name, price, categoryId) => this.props.editProduct(id, name, price, categoryId)} id={item.id} img={item.img} name={item.name} price={this.formatNumber(item.price)} categoryId={item.categoryId} categoryName={categoryName} categoryData={this.props.categoryData}></ProductItem>                
+                <ProductItem key={key} deleteProduct={(id) => this.props.deleteProduct(id)} editProduct={(id, name, price, categoryId, image) => this.props.editProduct(id, name, price, categoryId, image)} id={item.id} img={item.img} name={item.name} price={this.formatNumber(item.price)} categoryId={item.categoryId} categoryName={categoryName} categoryData={this.props.categoryData}></ProductItem>                
             )
         }))
     }
