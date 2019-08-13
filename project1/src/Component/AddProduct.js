@@ -51,9 +51,10 @@ class AddProduct extends Component {
                         </select>
                         <hr />
                         <label>Ảnh</label>
-                        <input ref={this.fileInput} type="file" className="form-control-file" name id placeholder aria-describedby="fileHelpId" onChange={() => this.getImage()}/>
+                        {/* <input ref={this.fileInput} type="file" className="form-control-file" name id placeholder aria-describedby="fileHelpId" onChange={() => this.getImage()}/> */}
+                        <input className="form-control" name="txtAnh" onChange={(event) => this.getNewData(event)}/>
                         <br />
-                        <button className="btn btn-outline-success" onClick={() => this.props.insertProduct(parseInt(this.props.productData[this.props.productData.length - 1].id) + 1, this.state.txtName, this.state.txtPrice, this.state.slCategoryId, this.state.image)}>Thêm mới</button>
+                        <button className="btn btn-outline-success" onClick={() => this.props.insertProduct(parseInt(this.props.productData[this.props.productData.length - 1].id) + 1, this.state.txtName, this.state.txtPrice, this.state.slCategoryId, this.state.txtAnh)}>Thêm mới</button>
                     </div>
                 </div>
             )

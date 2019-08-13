@@ -20,6 +20,7 @@ class App extends Component {
       txtSearch: "",
       displayFormInsert: false
     }
+    this.componentWillMount = this.componentWillMount.bind(this);
   }
 
   
@@ -52,28 +53,40 @@ class App extends Component {
     /**
      * LOADING DATA WITH FIREBASE
      */
-    var arr = [];
-    firebaseConnect.database().ref('productData').once('value').then(function(snapshot){
+    
+    let arr= [];
+    this.setState({
+      productData: arr
+    })
+    firebaseConnect.database().ref('productData').once('value').then((snapshot) => {
       snapshot.forEach(function(childSnapshot) {
-      //  console.log("key: " + childSnapshot.key);
-      //  console.log( childSnapshot.val().name);
-        let item = {};
-        item["id"] = childSnapshot.val().id;
-        item['name'] = childSnapshot.val().name;
-        item['price'] = childSnapshot.val().price;
-        item['img'] = childSnapshot.val().img;
-        item['categoryId'] = childSnapshot.val().categoryId;
-        arr.push(item);
-        
-      })
-
-      if(arr !== null){
+        //  console.log("key: " + childSnapshot.key);
+        //  console.log( childSnapshot.val().name);
+          let item = {};
+          item["id"] = childSnapshot.val().id;
+          item['name'] = childSnapshot.val().name;
+          item['price'] = childSnapshot.val().price;
+          item['img'] = childSnapshot.val().img;
+          item['categoryId'] = childSnapshot.val().categoryId;
+          arr.push(item); 
+        })
         this.setState({
           productData: arr
-        })
-      }
-      
+        });
     })
+    // firebaseConnect.database().ref('productData').once('value').then(function(snapshot){
+    //   snapshot.forEach(function(childSnapshot) {
+    //   //  console.log("key: " + childSnapshot.key);
+    //   //  console.log( childSnapshot.val().name);
+    //     let item = {};
+    //     item["id"] = childSnapshot.val().id;
+    //     item['name'] = childSnapshot.val().name;
+    //     item['price'] = childSnapshot.val().price;
+    //     item['img'] = childSnapshot.val().img;
+    //     item['categoryId'] = childSnapshot.val().categoryId;
+    //     arr.push(item); 
+    //   })
+    // })
   }
 
   getSelectSearch = (keySearch) => { 
@@ -130,6 +143,13 @@ class App extends Component {
     updates['/productData/' + id] = item;
 
     firebaseConnect.database().ref().update(updates);
+
+    let newData = this.state.productData;
+    newData.push(item);
+
+    this.setState({
+      productData: newData
+    })
   }
 
 
@@ -176,22 +196,21 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this.state.productData);
+    console.log(this.state.productData);
     var result = [];
-    // this.state.productData.map((value) => {
-    //   console.log(value);
-    //   // if(value.name.toLowerCase().indexOf(this.state.txtSearch.toLowerCase()) !== -1){
-    //   //   if(this.state.searchCategory !== ""){
-    //   //     if(value.categoryId.indexOf(this.state.searchCategory) !== -1){
-    //   //       result.push(value);
-    //   //     }
-    //   //   }
-    //   //   else{
-    //   //     result.push(value);
-    //   //   }
-    //   // }
-    //   // return 0;
-    // })
+    this.state.productData.map((value) => {
+      if(value.name.toLowerCase().indexOf(this.state.txtSearch.toLowerCase()) !== -1){
+        if(this.state.searchCategory !== ""){
+          if(value.categoryId.indexOf(this.state.searchCategory) !== -1){
+            result.push(value);
+          }
+        }
+        else{
+          result.push(value);
+        }
+      }
+      return 0;
+    })
 
     // console.log(this.state.productData);
     return (
