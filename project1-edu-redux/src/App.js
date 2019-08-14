@@ -1,13 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import News from './News';
+import {connect} from 'react-redux';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div>
-      
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <div>
+        {this.props.dulieu}
+        <News></News>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    dulieu: state.num
+  }
+}
+
+export default connect(mapStateToProps)(App);
+

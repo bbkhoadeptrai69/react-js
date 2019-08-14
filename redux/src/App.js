@@ -4,7 +4,6 @@ import './App.css';
 function App() {
 
   var redux = require('redux');
-  
 
   var oldState = {
     num: [1, 2, 3],
