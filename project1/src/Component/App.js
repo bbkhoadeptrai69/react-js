@@ -54,13 +54,10 @@ class App extends Component {
     
 
     /**
-     * LOADING DATA WITH FIREBASE
+     * LOADING PRODUCT DATA WITH FIREBASE
      */
-    //code for event data changed in firebase
-    
 
-
-    let arr= [];
+    let arr_product= [];
     firebaseConnect.database().ref('productData').once('value').then((snapshot) => {
       snapshot.forEach(function(childSnapshot) {
         //  console.log("key: " + childSnapshot.key);
@@ -71,29 +68,36 @@ class App extends Component {
           item['price'] = childSnapshot.val().price;
           item['img'] = childSnapshot.val().img;
           item['categoryId'] = childSnapshot.val().categoryId;
-          arr.push(item); 
+          arr_product.push(item); 
         })
         this.setState({
-          productData: arr
+          productData: arr_product
         });
     })
-    // firebaseConnect.database().ref('productData').once('value').then(function(snapshot){
-    //   snapshot.forEach(function(childSnapshot) {
-    //   //  console.log("key: " + childSnapshot.key);
-    //   //  console.log( childSnapshot.val().name);
-    //     let item = {};
-    //     item["id"] = childSnapshot.val().id;
-    //     item['name'] = childSnapshot.val().name;
-    //     item['price'] = childSnapshot.val().price;
-    //     item['img'] = childSnapshot.val().img;
-    //     item['categoryId'] = childSnapshot.val().categoryId;
-    //     arr.push(item); 
-    //   })
-    // })
+
+    /**
+     * LOADING CATEGORY DATA WITH FIREBASE
+     */
+    let arr_category= [];
+    firebaseConnect.database().ref('categoryData').once('value').then((snapshot) => {
+      snapshot.forEach(function(childSnapshot) {
+          let item = {};
+          item["id"] = childSnapshot.val().id;
+          item['name'] = childSnapshot.val().name;
+          arr_category.push(item);
+        })
+        this.setState({
+          categoryData: arr_category
+        });
+    })
+
+
+    //code for event data changed in firebase
     this.child_changed_InFirebase();
     this.child_removed_InFirebase();
     this.child_added_InFirebase();
   }
+
 
   child_changed_InFirebase = () => {
     firebaseConnect.database().ref('productData').on('child_changed', (data, type) =>{
@@ -106,6 +110,18 @@ class App extends Component {
           value.categoryId = data.val().categoryId;
           this.setState({
             productData: arrProductData
+          });
+        }
+      })
+    });
+
+    firebaseConnect.database().ref('categoryData').on('child_changed', (data, type) =>{
+      let arrCategoryData = this.state.categoryData;
+      arrCategoryData.map((value) => {
+        if(parseInt(value.id) === parseInt(data.val().id)){
+          value.name = data.val().name;
+          this.setState({
+            categoryData: arrCategoryData
           });
         }
       })
@@ -133,6 +149,15 @@ class App extends Component {
       arrProductData.push(item);
       this.setState({
         productData: arrProductData
+      });
+    });
+
+    let arrCategoryData = this.state.categoryData;
+    firebaseConnect.database().ref('categoryData').on('child_added', (data, type) =>{
+      let item = data.val();
+      arrCategoryData.push(item);
+      this.setState({
+        categoryData: arrCategoryData
       });
     });
     
@@ -291,7 +316,7 @@ class App extends Component {
       }
       return 0;
     })
-    // console.log(this.state.productData);
+    // console.log(this.state.categoryData);
     return (
       <div>
         <Header></Header>
